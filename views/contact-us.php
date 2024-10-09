@@ -14,19 +14,20 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-md-6 col-12">
-								<form action="" class="mb-5">
+								<form action="<?php echo url('/send')   ?>" method="POST"  class="mb-5">
 									<input
 										type="email"
 										class="form-control"
 										id="contactMail"
+										name="email"
 										placeholder="Email"
-                                        pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                                         title="enter valid email 'name@example.com'"
 									/>
 									<input
 										type="text"
 										class="form-control"
 										id="contactName"
+										name="name"
 										placeholder="Full Name"
                                         pattern="(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})"
                                         title="enter valid name 'john smith'"
@@ -36,13 +37,14 @@
 										class="form-control"
 										id="contactPhone"
 										placeholder="+201002596951"
-                                        pattern="^(\+|00)[1-9][0-9 \-\(\)\.]{7,32}$"
+										name="phone"
                                         title="enter valid Phone number with the country key '+201002596951'"
 									/>
 									<textarea
 										class="form-control"
 										id="contactMassage"
 										rows="3"
+										name="message"
 										placeholder="massage"
 									></textarea>
 									<div class="form-control form-control-btn">

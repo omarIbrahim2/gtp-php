@@ -2,11 +2,18 @@
 
 namespace Gtp\Main\Controllers;
 
+use Gtp\Src\Request;
+
 
 abstract class Controller{
 
     const VIEW_PATH = BASE_PATH . '/views';
     const PUBLIC_PATH = BASE_PATH   . '/public';
+
+    protected Request $request;
+    public function __construct(Request $request){
+        $this->request = $request;
+    }
     public function view(string $path){
         ob_start();
          include self::VIEW_PATH . "/layouts/main.php";

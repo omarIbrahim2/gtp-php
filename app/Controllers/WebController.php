@@ -1,10 +1,15 @@
 <?php
 
 namespace Gtp\Main\Controllers;
+use Gtp\Src\Request;
 use Gtp\Src\Response;
+use Gtp\Src\Validations\Validator;
 
 class WebController extends Controller{
 
+    public function __construct(Request $request){
+        parent::__construct($request);
+    }
 
     public function index(){
         return new Response($this->view('home'));
@@ -25,5 +30,11 @@ class WebController extends Controller{
     public function contactUs(){
         return new Response($this->view('contact-us'));
 
+    }
+
+    public function sendMail(){
+        Validator::make($this->request->data() , ['email' => ['required' , 'email'] , 'name' => ['required']]);
+
+       dd( Validator::$errors);
     }
 }

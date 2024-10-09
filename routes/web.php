@@ -10,5 +10,6 @@ return [
    ['GET' , '/services' , [WebController::class , 'services'] ],
    ['GET' , '/terms-conditions' , [WebController::class , 'termsConditions'] ],
    ['GET' , '/contact-us' , [WebController::class , 'contactUs'] ],
+   ['POST' , '/send' , [WebController::class , 'sendMail']],
 
 ];
