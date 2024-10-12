@@ -2,21 +2,28 @@
 
 namespace Gtp\Src;
 
+use Dotenv\Dotenv;
+
 
 class Session{
 
-     const SESSION_SAVE_PATH = BASE_PATH ."/storage/Sessions";
 
      const TTL = 30;
 
      private $sessionStartTime;
+
+     const FLASH_PREFIX = 'flash_';
+
+
     public function __construct(){
-      $this->iniSet();
       session_set_cookie_params(env('SESSION_LIFE_TIME') , '/' , env('APP_URL') , false , true);
+      $this->start();
+      
     }
 
     public function start(){
         if (session_status() === PHP_SESSION_NONE) {
+            $this->iniSet();
             if (session_start()) {
                 $this->setSessionStartTime();
                 $this->checkSessionVadility();
@@ -27,7 +34,7 @@ class Session{
 
 
     private function checkSessionVadility(){
-        if ((time() - $this->sessionStartTime ) > (self::TTL * 60)) {
+        if ((time() - $this->sessionStartTime ) > (self::TTL * 60)) {        
              $this->renewSession();
         }
     }
@@ -47,39 +54,59 @@ class Session{
         session_regenerate_id(true);
     }
 
-    public function put(string $key , string $value){
-        if (! is_null($value)) {
-              
-             $_SESSION[$key] = encrypt($value);
+    public function put(string $key , string|array $value){
+        if (is_null($value)) {
+            return;
         }
 
-        return isset($_SESSION[$key]) ? decrypt($_SESSION[$key]) : "";
+    
+        if (is_array($value)) {
+              foreach($value as $key => $val){
+                  if (isset($_SESSION[$key])) {
+                     $_SESSION[$key] = encrypt($_SESSION[$key]);
+                  }
+              }
+        }else{
+            
+            $_SESSION[$key] = encrypt($value);
+        }
+
     }
 
 
     public function has(string $key){
-
-        return isset($_SESSION[$key]);
+           
+       
+        return isset($_SESSION[$key]) || isset($_SESSION[self::FLASH_PREFIX . $key])  ;
     }
 
-    public function flash(string $key , string $value){
-        if (! is_null($value)) {       
-            $_SESSION[$key] = encrypt($value);
-       }
-
-       $session =  isset($_SESSION[$key]) ? decrypt($_SESSION[$key]) : "";
-        
-       $this->forget($key);
-
-       return $session;
-
+    public function flash(string $key , $value){
          
+         if (is_null($key)) {
+              return;
+         }
+         $key = self::FLASH_PREFIX.$key;
+         $_SESSION[$key] = encrypt($value);
     }
+
+    
 
     public function forget(string $key){
+         
         if (isset($_SESSION[$key])) {
              unset($_SESSION[$key]);
         }
+    }
+
+    public function get($key){
+         
+         if (isset($_SESSION[self::FLASH_PREFIX.$key])) {
+              $value = decrypt($_SESSION[self::FLASH_PREFIX.$key]);
+              $this->forget(self::FLASH_PREFIX.$key);
+              return $value;
+         }
+             
+        return isset($_SESSION[$key]) ? decrypt($_SESSION[$key]) : '';
     }
 
 
@@ -87,7 +114,6 @@ class Session{
         ini_set('session.use_cookies' , true);
         ini_set('session.use_only_coookies' , true);
         ini_set('session.use_trans_sid', false);
-        ini_set('session.save_handler' , env("SESSION_DRIVER"));
-        session_save_path(self::SESSION_SAVE_PATH);
+        ini_set('session.save_handler' , 'files');
      }
 }

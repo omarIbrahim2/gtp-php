@@ -1,6 +1,8 @@
 <?php
 
 namespace Gtp\Main\Controllers;
+use Gtp\Src\Exceptions\ValidationException;
+use Gtp\Src\Mailer\Mailer;
 use Gtp\Src\Request;
 use Gtp\Src\Response;
 use Gtp\Src\Validations\Validator;
@@ -28,13 +30,31 @@ class WebController extends Controller{
     }
 
     public function contactUs(){
+        
         return new Response($this->view('contact-us'));
 
     }
 
     public function sendMail(){
-        Validator::make($this->request->data() , ['email' => ['required' , 'email'] , 'name' => ['required']]);
+        
+           $data = $this->request->validate([
+             'name' => [ 'required' ,'string' ,'max:100'] , 
+             'email' => ['required' , 'email'],
+             'phone' => ['required' ,'phone'],
+             'message' => ['string'],
+             ]);
+             
+             
+             $mailer = new Mailer();
 
-       dd( Validator::$errors);
+             try {
+                
+                $mailer->message($data['message'] ?? '')->to($data['email'])->send();
+             } catch (\Throwable $th) {
+                
+             }
+
+             
+        
     }
 }

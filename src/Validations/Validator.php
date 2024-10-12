@@ -2,10 +2,14 @@
 
 namespace Gtp\Src\Validations;
 
+use Gtp\Src\Request;
+
 
 class Validator{
 
     public static array $errors = [];
+
+    private static Request $request;
      public static function make(array $data , array $rules){
           
               foreach ($rules as $key => $value) {
@@ -17,6 +21,26 @@ class Validator{
                       
                    }
               }
+              return self::class;
+     }
+
+     public function errors(){
+
+         return self::$errors;
+     }
+
+     public static function fails(){
+         return count(self::$errors) > 0;
+     } 
+
+
+     public static function setRequest(Request $request){
+        self::$request = $request; 
+     }
+
+
+     public function getRequest(){
+        return self::$request;
      }
 
    
@@ -27,21 +51,42 @@ class Validator{
 
 
      private static function handle($rules , $key , $value){
-
+         $params = null;
         foreach($rules as $rule){
+            if (self::checkIfParamsExist($rule)) {
+                 $parts = explode( ':',$rule);
+                 $params = (int)$parts[1];
+                 $rule = $parts[0];
+            }
+
+             
             $class =  self::getClassName($rule);
+            
+            
              if (class_exists($class)) {
-                   
+
                  $ruleObj = new $class();
-                 if (!  $ruleObj->handle($value)) {
-                      
+                
+                 if (!  $ruleObj->handle($value , $params)) {
+                    
                      self::$errors[$key] = trim($ruleObj->errorMessage($key));
                      break;       
                  }
+
                 
                    
              }
         }     
+     }
+
+
+     private static function checkIfParamsExist($value){
+         if (str_contains($value , ':')) {
+              return true;
+
+         }
+
+         return false;
      }
     
 }

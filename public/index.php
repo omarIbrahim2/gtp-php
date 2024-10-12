@@ -1,8 +1,10 @@
 <?php
 
-use Gtp\Src\Application;
+use Dotenv\Dotenv;
 use Gtp\Src\Kernel;
 use Gtp\Src\Request;
+use Gtp\Src\Session;
+use Gtp\Src\Application;
 
 
 define('BASE_PATH' , dirname(__DIR__));
@@ -13,7 +15,9 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 
 
- $app = new Application(Request::createFromGlobals());
+ $app = Application::createInstance();
+
+
 
 
  $kernel = new Kernel();

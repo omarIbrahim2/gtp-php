@@ -1,14 +1,20 @@
 <?php
+namespace Gtp\Src\Validations\Rules;
 use Gtp\Src\Validations\Rules\Rule;
 
 
 class PhoneRule implements Rule{
 
 
-    public function handle($value){
+    public function handle($value , $params=null){
         $value = htmlspecialchars($value);
-        trim($value);
-        return preg_match("/^(\+|00)[1-9]([0-9\s\-\+\(\)]*)$/" , $value);
+         trim($value);
+         $pattern = '/^\+?[0-9]+$/';
+        if (preg_match($pattern , $value) && strlen($value) >= 11) {
+            return true;
+        } 
+
+        return false;
     }
 
 

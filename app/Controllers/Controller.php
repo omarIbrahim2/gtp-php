@@ -13,6 +13,7 @@ abstract class Controller{
     protected Request $request;
     public function __construct(Request $request){
         $this->request = $request;
+        
     }
     public function view(string $path){
         ob_start();

@@ -5,7 +5,7 @@ namespace Gtp\Src\Validations\Rules;
 class RequiredRule implements Rule{
 
 
-    public function handle($value){
+    public function handle($value , $params=null){
        $value = htmlspecialchars($value);
         trim($value);
         return !empty($value);

@@ -28,7 +28,6 @@ class Kernel{
                     
         [$status , [$controller , $method ] , $vars] = $routeInfo;
 
-
         return call_user_func_array([new $controller($app->request) , $method] , $vars);
          
         

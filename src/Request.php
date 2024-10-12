@@ -1,13 +1,19 @@
 <?php
 
 namespace Gtp\Src;
+use Gtp\Src\Exceptions\ValidationException;
+use Gtp\Src\Validations\Validator;
 
 
 class Request{
-    
-    public function __construct(public readonly array $getParams , public readonly array $postParams , public readonly array $server ){}
+     
+     private $app;
+    public function __construct(public readonly array $getParams , public readonly array $postParams , public readonly array $server ){
+      $this->setApplication($this->app);
+    }
 
     public static function createFromGlobals(){
+        
          return new static($_GET , $_POST , $_SERVER);
     }
 
@@ -47,4 +53,37 @@ class Request{
             return $this->postParams;
        }
     }
+
+
+    public function validate(array $rules){
+
+     Validator::setRequest($this);
+
+     $validator = Validator::make($this->data() , $rules);
+
+       if ($validator::fails()) {
+             
+          foreach ($validator::$errors as $key => $value) {
+               session()->flash($key , $value);
+
+          }
+       
+          header("location:" . $this->referer());
+          exit;
+       }
+       
+
+       return $this->data();
+    }
+
+     public function referer(){
+        return $this->server['HTTP_REFERER'];  
+     }
+      public function setApplication($app){
+         $this->app = $app;   
+     }
+
+     public function getApplication (){
+          return $this->app;
+     }
 }

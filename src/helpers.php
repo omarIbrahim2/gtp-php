@@ -1,4 +1,7 @@
 <?php
+use Gtp\Src\Request;
+use Gtp\Src\Session;
+use Gtp\Src\Application;
 
 function url(string $uri):string{
      return $_ENV['APP_URL'] . $uri;
@@ -40,4 +43,21 @@ function decrypt(string $cipher){
 
      return $output;
 
+}
+
+
+function session(){
+  return app()->getSession();     
+}
+
+function error($key){
+      if (session()->has($key)) {
+          # code...
+         return "<p class='text-danger'>". session()->get($key) . "</p>";
+      }
+      return'';
+}
+
+function app(){
+     return  Application::createInstance();
 }

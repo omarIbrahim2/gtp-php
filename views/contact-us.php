@@ -15,7 +15,10 @@
 						<div class="row">
 							<div class="col-md-6 col-12">
 								<form action="<?php echo url('/send')   ?>" method="POST"  class="mb-5">
-									<input
+							     
+							
+								   <?php echo error('email') ?>
+								   <input
 										type="email"
 										class="form-control"
 										id="contactMail"
@@ -23,15 +26,16 @@
 										placeholder="Email"
                                         title="enter valid email 'name@example.com'"
 									/>
+									<?php echo error('name') ?>
 									<input
 										type="text"
 										class="form-control"
 										id="contactName"
 										name="name"
 										placeholder="Full Name"
-                                        pattern="(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})"
                                         title="enter valid name 'john smith'"
 									/>
+									<?php echo error('phone')  ?>
 									<input
 										type="text"
 										class="form-control"
@@ -40,6 +44,7 @@
 										name="phone"
                                         title="enter valid Phone number with the country key '+201002596951'"
 									/>
+									<?php echo error('message') ?>
 									<textarea
 										class="form-control"
 										id="contactMassage"
