@@ -18,8 +18,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
  $app = Application::createInstance();
 
 
-
-
  $kernel = new Kernel();
 
  $response = $kernel->handle($app);

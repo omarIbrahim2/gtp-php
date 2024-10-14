@@ -1,7 +1,6 @@
 <?php
 
-namespace Src\Validations\Rules;
-use Gtp\Src\Validations\Rules\Rule;
+namespace GTP\Src\Validations\Rules;
 
 
 class StringRule implements Rule{

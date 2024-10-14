@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer{
 
-    private $mail;
+    private PHPMailer $mail;
     public function __construct(){
          $this->mail = new PHPMailer(true);
 
@@ -32,20 +32,20 @@ class Mailer{
         return $this;
     }
 
+
+
     public function to(string $email){
         $this->mail->addAddress($email);
         return $this;
     }
 
-    public function send(){
-        try {
+    public function send(){ 
+          $this->mail->From = env("MAIL_FROM_ADDRESS" , '');           
             $this->mail->send();
-        } catch (\Throwable $th) {
-        
-            echo $th->getMessage();
-        }
-        
     }
+
+
+  
 
 
 

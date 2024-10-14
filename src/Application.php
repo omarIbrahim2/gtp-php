@@ -2,9 +2,12 @@
 
 namespace Gtp\Src;
 use Dotenv\Dotenv;
+use Gtp\Src\Traits\CsrfToken;
 
 
 class Application{
+
+   use  CsrfToken;
     public Session $session;
 
     private static $instance;
@@ -41,6 +44,12 @@ class Application{
     public function getSession(){
 
         return $this->session;
+    }
+
+    public function paths(){
+        return [
+            'views' => BASE_PATH . '/views',
+        ];
     }
 
 

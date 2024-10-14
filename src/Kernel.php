@@ -7,11 +7,22 @@ use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
 class Kernel{
+     private $middlewares;
+     
+     const NOT_FOUND = 0;
+
+     const METHOD_NOT_ALLOWED=2;
+     private function getMiddlewares(){
+           $config   =  require BASE_PATH . '/src/config/app.php';
 
 
-    public function handle(Application $app):Response{
+         $middlewares = $config['middlewares'];
 
-        
+         return $middlewares;
+     }
+
+    public function handle(Application $app){
+         
          
         $dispatcher = simpleDispatcher(function(RouteCollector $routeCollector){
 
@@ -27,11 +38,25 @@ class Kernel{
         $routeInfo = $dispatcher->dispatch($app->request->method() , $app->request->path());
                     
         [$status , [$controller , $method ] , $vars] = $routeInfo;
+     
+        if ($status === self::NOT_FOUND || $status === self::METHOD_NOT_ALLOWED) {
+            header('location:'.url('/') );
+            exit;
+        }
 
-        return call_user_func_array([new $controller($app->request) , $method] , $vars);
-         
+
+        $request = $app->request;
+        $next  = function($request) use($controller , $method , $vars){
+
+           return call_user_func_array([new $controller($request) , $method] , $vars);
+        };
+
         
-
+       foreach ($this->getMiddlewares() as  $middleware) {
+            $middlewareObj = new $middleware();
+           return $middlewareObj->handle($request , $next);
+       }
+        
         
     }
 }

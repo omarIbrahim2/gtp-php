@@ -50,8 +50,16 @@ class WebController extends Controller{
              try {
                 
                 $mailer->message($data['message'] ?? '')->to($data['email'])->send();
+
+                 session()->flash('success' , 'sent successfully');
+
+                  header('location:'. $this->request->referer());
+                  exit;
              } catch (\Throwable $th) {
-                
+                 session()->flash('error' , 'error happened ..');
+                 
+                 header('location:'. $this->request->referer());
+                 exit;
              }
 
              

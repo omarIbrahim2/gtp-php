@@ -13,10 +13,13 @@
 				<div class="contact-content">
 					<div class="container">
 						<div class="row">
+						     <?php echo message('danger' , 'error')  ?>
+							<?php echo message('success' , 'success')  ?>
 							<div class="col-md-6 col-12">
 								<form action="<?php echo url('/send')   ?>" method="POST"  class="mb-5">
 							     
-							
+							      <?php echo csrf_field() ?>
+
 								   <?php echo error('email') ?>
 								   <input
 										type="email"

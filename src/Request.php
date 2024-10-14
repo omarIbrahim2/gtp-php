@@ -8,8 +8,9 @@ use Gtp\Src\Validations\Validator;
 class Request{
      
      private $app;
-    public function __construct(public readonly array $getParams , public readonly array $postParams , public readonly array $server ){
-      $this->setApplication($this->app);
+    public function __construct(public readonly array $getParams , public readonly array $postParams , public readonly array $server){
+      
+      
     }
 
     public static function createFromGlobals(){
@@ -18,7 +19,7 @@ class Request{
     }
 
 
-    private function isPostMethod(){
+    public function isPostMethod(){
       return $this->method() === 'POST';
     }
 
@@ -54,6 +55,11 @@ class Request{
        }
     }
 
+    public function has($key){
+       return isset($this->postParams[$key]) || isset($this->getParams[$key]);
+
+    }
+
 
     public function validate(array $rules){
 
@@ -79,11 +85,9 @@ class Request{
      public function referer(){
         return $this->server['HTTP_REFERER'];  
      }
-      public function setApplication($app){
-         $this->app = $app;   
-     }
+   
 
      public function getApplication (){
-          return $this->app;
-     }
+          return $this->app = Application::createInstance();
+     } 
 }

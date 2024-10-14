@@ -58,6 +58,28 @@ function error($key){
       return'';
 }
 
+function csrf_field(){
+      return "<input name='token' type='hidden'  value ='" . app()->getCsrf() . "' />";
+}
+
 function app(){
      return  Application::createInstance();
+}
+
+function abort($code){
+     ob_start();
+     include app()->paths()['views'] . '/errors' . '/' . $code . '.php';
+     $content = ob_get_contents();
+      ob_end_clean(); 
+
+      return $content;
+
+}
+
+
+function message($type , $key){
+       
+     if (session()->has($key)) {
+          return "<div class='bg bg-" . $type . "'> <p class ='text-white'> ". session()->get($key)  . " </p> </div>";
+     }
 }
