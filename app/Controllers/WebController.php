@@ -38,10 +38,10 @@ class WebController extends Controller{
     public function sendMail(){
         
            $data = $this->request->validate([
-             'name' => [ 'required' ,'string' ,'max:100'] , 
-             'email' => ['required' , 'email'],
-             'phone' => ['required' ,'phone'],
-             'message' => ['string'],
+             'name' => [ 'nullable', 'string' ,'max:100'] , 
+             'email' => [ 'required' , 'email'],
+             'phone' => [ 'nullable','phone'],
+             'message' => ['required','string'],
              ]);
              
              
@@ -64,5 +64,37 @@ class WebController extends Controller{
 
              
         
+    }
+
+    public function footerSendMail(){
+        $data = $this->request->validate([
+            'email-footer' => [ 'required' , 'email'],
+            'message-footer' => ['required','string'],
+            ] ,[
+                'email-footer.required' => 'email is required',
+                'message-footer.required' => 'message is required',
+                'email-footer.email' => 'is not a valid email',
+                'message-footer.string' => 'message must be a string'
+
+            ]);
+            
+            
+            $mailer = new Mailer();
+
+            try {
+               
+               $mailer->message($data['message-footer'] ?? '')->to($data['email-footer'])->send();
+
+                session()->flash('success-footer' , 'sent successfully');
+
+                 header('location:'. $this->request->referer());
+                 exit;
+            } catch (\Throwable $th) {
+
+                session()->flash('error-footer' , 'error happened ..');
+                
+                header('location:'. $this->request->referer());
+                exit;
+            }
     }
 }

@@ -26,20 +26,27 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-12">
-							<form action="">
+						<?php echo message('danger' , 'error-footer')  ?>
+						<?php echo message('success' , 'success-footer')  ?>
+							<form action="<?php echo url('/send-footer')  ?>" method="POST">
+							<?php echo csrf_field() ?>
+
+							<?php echo error('email-footer') ?>
 								<input
+								  name="email-footer"
 									type="email"
 									class="form-control"
 									id="homeEmail"
 									placeholder="Enter Your email"
 									aria-describedby="emailHelp"
-									pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
 									title="enter valid email 'name@example.com'"
 								/>
+								<?php echo error('message-footer') ?>
 								<textarea
 									class="form-control"
 									id="homeMassage"
 									rows="3"
+									name="message-footer"
 									placeholder="Enter Your massage"
 								></textarea>
 								<button type="submit" class="btn">submit</button>

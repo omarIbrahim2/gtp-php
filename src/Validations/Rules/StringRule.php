@@ -1,13 +1,15 @@
 <?php
 
-namespace GTP\Src\Validations\Rules;
+namespace Gtp\Src\Validations\Rules;
 
 
-class StringRule implements Rule{
+class StringRule extends AbstractRule{
 
     public function handle($value , $params=null){
-        $value = htmlspecialchars($value);
-        trim($value);
+        $value = $this->preValidations($value);
+        if ($this->nullable && empty($value)) {
+            return true;
+        }
         return is_string($value);
     }
 

@@ -2,12 +2,12 @@
 
 namespace Gtp\Src\Validations\Rules;
 
-class RequiredRule implements Rule{
+class RequiredRule extends AbstractRule{
 
 
     public function handle($value , $params=null){
-       $value = htmlspecialchars($value);
-        trim($value);
+
+        $value = $this->preValidations($value);
         return !empty($value);
     }
 

@@ -61,19 +61,22 @@ class Request{
     }
 
 
-    public function validate(array $rules){
+    public function validate(array $rules , array $messages =[]){
 
      Validator::setRequest($this);
-
-     $validator = Validator::make($this->data() , $rules);
+     
+     $validator = Validator::make($this->data() , $rules , $messages);
 
        if ($validator::fails()) {
              
+
           foreach ($validator::$errors as $key => $value) {
                session()->flash($key , $value);
 
           }
        
+         
+
           header("location:" . $this->referer());
           exit;
        }
