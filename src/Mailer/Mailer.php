@@ -13,13 +13,13 @@ class Mailer{
 
          try {
             $this->mail->isSMTP();
-            $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;   
+            $this->mail->SMTPDebug = 0;  
             $this->mail->Host = env('MAIL_HOST' , '');
             $this->mail->SMTPAuth = true;
             $this->mail->Username = env("MAIL_USERNAME" , '');
             $this->mail->Password = env('MAIL_PASSWORD');
             $this->mail->Port = env('MAIL_PORT' , '');
-            $this->mail->isHTML(false);
+            $this->mail->isHTML(true);
 
          } catch (\Throwable $th) {
             echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
@@ -27,8 +27,17 @@ class Mailer{
     }
 
 
-    public function message(string $message){
-        $this->mail->Body = $message;
+    public function message(array $message){
+        $file = file_get_contents(BASE_PATH . '/views/email/template.php');
+        $file = str_replace(
+            ['{name}' , '{phone}' , '{message}'] , 
+            [$message['name'] , $message['phone'] , $message['message']],
+             $file);
+
+            $text = $this->mail->msgHTML($file); 
+
+             $this->mail->Body = $text;
+     
         return $this;
     }
 

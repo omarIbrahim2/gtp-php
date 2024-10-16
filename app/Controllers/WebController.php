@@ -47,9 +47,15 @@ class WebController extends Controller{
              
              $mailer = new Mailer();
 
+             $message = [
+                'message' => $data['message'],
+                'phone' => $data['phone'] ?? '',
+                'name' => $data['name'] ?? '',
+             ];
+
              try {
                 
-                $mailer->message($data['message'] ?? '')->to($data['email'])->send();
+                $mailer->message($message)->to($data['email'])->send();
 
                  session()->flash('success' , 'sent successfully');
 
@@ -80,10 +86,14 @@ class WebController extends Controller{
             
             
             $mailer = new Mailer();
-
+            $message = [
+                'message' => $data['message-footer'],
+                'phone' => $data['phone'] ?? '',
+                'name' => $data['name'] ?? '',
+             ];
             try {
                
-               $mailer->message($data['message-footer'] ?? '')->to($data['email-footer'])->send();
+               $mailer->message($message)->to($data['email-footer'])->send();
 
                 session()->flash('success-footer' , 'sent successfully');
 
