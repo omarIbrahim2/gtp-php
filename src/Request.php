@@ -74,11 +74,8 @@ class Request{
                session()->flash($key , $value);
 
           }
-       
-         
-
-          header("location:" . $this->referer());
-          exit;
+             
+          redirect($this->referer());
        }
        
 

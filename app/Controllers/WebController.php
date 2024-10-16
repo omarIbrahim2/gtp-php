@@ -59,13 +59,11 @@ class WebController extends Controller{
 
                  session()->flash('success' , 'sent successfully');
 
-                  header('location:'. $this->request->referer());
-                  exit;
+                  redirect($this->request->referer());
              } catch (\Throwable $th) {
                  session()->flash('error' , 'error happened ..');
                  
-                 header('location:'. $this->request->referer());
-                 exit;
+                  redirect($this->request->referer());
              }
 
              
@@ -96,15 +94,14 @@ class WebController extends Controller{
                $mailer->message($message)->to($data['email-footer'])->send();
 
                 session()->flash('success-footer' , 'sent successfully');
-
-                 header('location:'. $this->request->referer());
-                 exit;
+                 
+                redirect($this->request->referer());
+                 
             } catch (\Throwable $th) {
 
                 session()->flash('error-footer' , 'error happened ..');
                 
-                header('location:'. $this->request->referer());
-                exit;
+                redirect($this->request->referer());
             }
     }
 }

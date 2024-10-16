@@ -83,3 +83,8 @@ function message($type , $key){
           return "<div class='bg bg-" . $type . "'> <p class ='text-white'> ". session()->get($key)  . " </p> </div>";
      }
 }
+
+function redirect($location){
+    header("location:" . $location);
+    exit;
+}
