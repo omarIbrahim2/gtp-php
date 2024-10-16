@@ -1,7 +1,6 @@
 <?php
 
 namespace Gtp\Src;
-use Gtp\Src\Exceptions\ValidationException;
 use Gtp\Src\Validations\Validator;
 
 

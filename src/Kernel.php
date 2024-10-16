@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Gtp\Src;
-use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 

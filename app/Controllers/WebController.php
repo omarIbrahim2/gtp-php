@@ -1,11 +1,9 @@
 <?php
 
 namespace Gtp\Main\Controllers;
-use Gtp\Src\Exceptions\ValidationException;
 use Gtp\Src\Mailer\Mailer;
 use Gtp\Src\Request;
 use Gtp\Src\Response;
-use Gtp\Src\Validations\Validator;
 
 class WebController extends Controller{
 

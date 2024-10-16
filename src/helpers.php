@@ -1,6 +1,4 @@
 <?php
-use Gtp\Src\Request;
-use Gtp\Src\Session;
 use Gtp\Src\Application;
 
 function url(string $uri):string{
