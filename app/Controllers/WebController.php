@@ -53,7 +53,7 @@ class WebController extends Controller{
 
              try {
                 
-                $mailer->message($message)->to($data['email'])->send();
+                $mailer->message($message)->to()->send($data['email']);
 
                  session()->flash('success' , 'sent successfully');
 
@@ -89,7 +89,7 @@ class WebController extends Controller{
              ];
             try {
                
-               $mailer->message($message)->to($data['email-footer'])->send();
+               $mailer->message($message)->to()->send($data['email-footer']);
 
                 session()->flash('success-footer' , 'sent successfully');
                  

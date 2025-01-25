@@ -43,13 +43,13 @@ class Mailer{
 
 
 
-    public function to(string $email){
-        $this->mail->addAddress($email);
+    public function to(){
+        $this->mail->addAddress(env("MAIL_FROM_ADDRESS" , ''));
         return $this;
     }
 
-    public function send(){ 
-          $this->mail->From = env("MAIL_FROM_ADDRESS" , '');           
+    public function send($email){ 
+          $this->mail->From = $email;           
             $this->mail->send();
     }
 
